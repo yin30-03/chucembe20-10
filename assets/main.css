@@ -1,0 +1,1294 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0a0512 !important;
+    background: radial-gradient(ellipse at center bottom, #2d1b4e 0%, #1a0a2e 30%, #0a0512 70%, #050208 100%) !important;
+    -webkit-tap-highlight-color: transparent;
+    color-scheme: dark;
+}
+
+/* ===== INTRO: Hoa hạt Galaxy — nền trong suốt để lộ nền cricle ===== */
+.love-intro {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: transparent;
+    isolation: isolate;
+    z-index: 1;
+}
+
+#loveCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: transparent;
+    cursor: pointer;
+    display: block;
+}
+
+.galaxy-hint {
+    position: absolute;
+    bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 36px;
+    border: 0;
+    border-radius: 999px;
+    font: 600 18px/1 'Lora', Georgia, serif;
+    color: #1d1233;
+    background: linear-gradient(180deg, #fff0f7 0%, #ffc2df 70%, #ff99cc 100%);
+    box-shadow: 0 6px 0 #d96699, 0 14px 30px rgba(255, 128, 179, 0.4);
+    cursor: pointer;
+    white-space: nowrap;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity .5s, transform .15s, box-shadow .15s;
+    pointer-events: none;
+}
+
+.galaxy-hint.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.galaxy-hint:active {
+    transform: translateX(-50%) translateY(4px);
+    box-shadow: 0 2px 0 #8f6fdc, 0 8px 20px rgba(140, 100, 255, .35);
+}
+
+.galaxy-hint:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 4px;
+}
+
+/* ===== KHUNG ===== */
+:root {
+    --ink: #f1e8e6;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px)
+}
+
+#content {
+    margin: 0;
+    min-height: 100vh;
+    background: transparent;
+    color: var(--ink);
+    font-family: "Montserrat", system-ui, sans-serif;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 0.9s ease;
+}
+
+#content.show {
+    opacity: 1;
+}
+
+.stage {
+    container-type: inline-size;
+    width: min(100%, 780px);
+    margin: 0 auto
+}
+
+.frame {
+    width: 100%;
+    aspect-ratio: 3/2;
+    background: transparent;
+    border: .8cqw solid #f0e9e9;
+    border-radius: .5cqw
+}
+
+.gold {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border: 1cqw solid;
+    border-image: linear-gradient(135deg, #f7e3a0, #b78425 45%, #f3d57c 70%, #9a6c18) 1;
+    background:
+        radial-gradient(ellipse at 50% 60%, rgba(255, 205, 110, .34) 0, rgba(255, 180, 70, .14) 50%, transparent 78%),
+        rgba(255, 255, 255, .06);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px)
+}
+
+.gold::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    box-shadow: inset 0 0 10cqw 1cqw var(--led, rgba(255, 190, 90, .6)), inset 0 0 2.5cqw var(--led, rgba(255, 215, 130, .7));
+    animation: glow 4s ease-in-out infinite
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        opacity: .8
+    }
+
+    50% {
+        opacity: 1
+    }
+}
+
+.names {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 3.5%;
+    z-index: 3;
+    text-align: center;
+    font-family: "Great Vibes", cursive;
+    font-size: 8.4cqw;
+    color: #fff;
+    line-height: 1.1;
+    text-shadow: 0 0 1.6cqw rgba(255, 255, 255, .4), 0 .3cqw .6cqw rgba(0, 0, 0, .5)
+}
+
+.names .heart {
+    color: #ee3b4f;
+    font-family: system-ui;
+    font-size: 5.2cqw;
+    margin: 0 1.2cqw;
+    vertical-align: .7cqw;
+    display: inline-block;
+    animation: beat 1.8s ease-in-out infinite;
+    text-shadow: 0 0 1.5cqw rgba(238, 59, 79, .7)
+}
+
+@keyframes beat {
+
+    0%,
+    100% {
+        transform: scale(1)
+    }
+
+    50% {
+        transform: scale(1.18)
+    }
+}
+
+.puzzle {
+    position: absolute;
+    left: 3%;
+    top: 26%;
+    width: 53%;
+    height: 58%;
+    z-index: 3;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.puzzle svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 .5cqw .8cqw rgba(0, 0, 0, .5)) drop-shadow(0 0 1.2cqw rgba(255, 255, 255, .18));
+    will-change: transform;
+}
+
+/* Ghép nhanh hơn, ít lag */
+.pc {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: snap .55s cubic-bezier(.22, .9, .3, 1.1) both;
+    animation-delay: calc(var(--i) * .035s);
+    will-change: transform, opacity;
+}
+
+@keyframes snap {
+    0% {
+        opacity: 0;
+        transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(.55)
+    }
+
+    70% {
+        opacity: 1
+    }
+
+    100% {
+        opacity: 1;
+        transform: none
+    }
+}
+
+/* Chữ gợi ý sau khi ghép xong — hiện ngắn rồi mất */
+.hold-hint {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    transform: translate(-50%, -50%);
+    z-index: 25;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: rgba(20, 8, 30, .72);
+    color: #ffe6f2;
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-size: clamp(13px, 2.4cqw, 18px);
+    font-weight: 600;
+    letter-spacing: .02em;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    text-shadow: 0 0 12px rgba(255, 153, 204, .7);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .35);
+    transition: opacity .25s ease;
+}
+
+.hold-hint.show {
+    opacity: 1;
+}
+
+/* Hiệu ứng khi đang bấm giữ */
+.puzzle.holding {
+    filter: brightness(1.15);
+}
+
+.puzzle.holding svg {
+    transform: scale(1.02);
+    transition: transform .2s ease;
+}
+
+@media (prefers-reduced-motion:reduce) {
+
+    .pc,
+    .names .heart,
+    .gold::after {
+        animation: none
+    }
+}
+
+.right {
+    position: absolute;
+    right: 3.5%;
+    top: 27%;
+    width: 36%;
+    text-align: center;
+    color: #fff;
+    z-index: 3;
+    text-shadow: 0 .2cqw .5cqw rgba(0, 0, 0, .6)
+}
+
+.small {
+    font-weight: 700;
+    font-size: 2.2cqw;
+    margin: 0;
+    letter-spacing: .01em
+}
+
+.script {
+    font-family: "Great Vibes", cursive;
+    font-size: 5cqw;
+    line-height: 1;
+    margin: .2cqw 0 1.4cqw
+}
+
+.month {
+    font-family: "Great Vibes", cursive;
+    font-size: 3.6cqw;
+    margin-bottom: .8cqw
+}
+
+.cal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-size: 1.95cqw;
+    row-gap: 1cqw;
+    justify-items: center
+}
+
+.cal b {
+    font-size: 1.5cqw
+}
+
+.cal span {
+    width: 3.3cqw;
+    height: 3.3cqw;
+    display: grid;
+    place-items: center;
+    position: relative;
+    z-index: 0
+}
+
+.cal .on {
+    font-weight: 700
+}
+
+.cal .on::before {
+    transform: translateX(5px);
+    content: "";
+    position: absolute;
+    inset: -2.2cqw;
+    z-index: -1;
+    background: url("../images/icon/heart.png") no-repeat center/contain
+}
+
+.flora {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 3
+}
+
+/* ===== CẢNH DẢI NGÂN HÀ (churoi) — nền trong suốt để lộ nền galaxy cricle ===== */
+#galaxy-scene {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: transparent;
+    display: none;
+    opacity: 0;
+    transition: opacity .7s ease;
+    overflow: hidden;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#galaxy-scene.active {
+    display: block;
+    opacity: 1;
+}
+
+#galaxy-scene canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#main-title {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    font-size: 2.6em;
+    color: #FFE6F2;
+    white-space: nowrap;
+    text-shadow: 0 0 10px #FF99CC, 0 0 18px #E64D9B;
+    z-index: 10;
+    pointer-events: none;
+    text-align: center;
+    font-family: 'Indie Flower', 'Bradley Hand', 'Segoe Script', cursive;
+    transition: opacity 3s ease;
+    margin: 0;
+}
+
+#main-title.fade-out {
+    opacity: 0;
+}
+
+@media (max-width: 768px) {
+    #main-title {
+        font-size: 1.55em;
+        top: 22px;
+        white-space: normal;
+        padding: 0 10px;
+        line-height: 1.15;
+    }
+}
+
+#love-letter-btn {
+    position: fixed !important;
+    bottom: 24px !important;
+    right: 24px !important;
+    z-index: 2147483647 !important;
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    background: rgba(20, 8, 30, 0.35);
+    border-radius: 50%;
+    box-shadow: 0 4px 20px rgba(255, 105, 180, 0.45);
+    cursor: pointer;
+    line-height: 0;
+    animation: btnBeat 1.8s ease-in-out infinite;
+    transition: transform .25s ease, opacity .3s ease;
+    pointer-events: auto !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#love-letter-btn[hidden] {
+    display: none !important;
+}
+
+#love-letter-btn:not([hidden]) {
+    display: block !important;
+}
+
+#love-letter-btn:hover {
+    transform: scale(1.08);
+}
+
+#love-letter-btn img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+#love-letter-btn .fallback {
+    display: none;
+    width: 72px;
+    height: 72px;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.6rem;
+    line-height: 1;
+}
+
+#love-letter-btn.no-img img {
+    display: none !important;
+}
+
+#love-letter-btn.no-img .fallback {
+    display: flex !important;
+}
+
+@keyframes btnBeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.07);
+    }
+}
+
+@media (max-width: 480px) {
+    #love-letter-btn {
+        bottom: 18px;
+        right: 18px;
+    }
+
+    #love-letter-btn img,
+    #love-letter-btn .fallback {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+
+/* Nền hiệu ứng từ cricle — luôn nằm dưới cùng */
+#effects-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+}
+
+/* ===== Quả cầu ảnh — nền trong suốt để lộ nền galaxy cricle ===== */
+#sphere-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    pointer-events: auto;
+    display: none;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    background: transparent;
+}
+
+#sphere-container.active {
+    display: block;
+    opacity: 1;
+}
+
+#sphere-container .element {
+    width: 200px;
+    height: 200px;
+    box-shadow:
+        0 0 10px rgba(249, 146, 146, 0.5),
+        0 0 25px rgba(255, 182, 193, 0.3),
+        0 0 50px rgba(255, 192, 203, 0.15);
+    border: 1px solid rgba(255, 182, 193, 0.4);
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    cursor: default;
+    border-radius: 8px;
+    overflow: hidden;
+    background: transparent;
+}
+
+#sphere-container .element:hover {
+    box-shadow:
+        0 0 20px rgba(249, 146, 146, 0.8),
+        0 0 40px rgba(255, 182, 193, 0.5),
+        0 0 70px rgba(255, 192, 203, 0.3);
+    border: 1px solid rgba(255, 182, 193, 0.8);
+}
+
+#sphere-container .element img {
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    #sphere-container .element {
+        box-shadow:
+            0 0 12px rgba(255, 105, 180, 0.6),
+            0 0 30px rgba(255, 182, 193, 0.4);
+    }
+
+    #sphere-container .element:hover {
+        box-shadow:
+            0 0 20px rgba(255, 105, 180, 0.8),
+            0 0 45px rgba(255, 182, 193, 0.5);
+    }
+}
+
+
+/* ===== Envelope & Letter (từ cricle) ===== */
+/* Envelope letter from clone.html */
+#envelope-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 519;
+    background: transparent;
+    pointer-events: none;
+}
+
+#envelope-overlay.show {
+    pointer-events: auto;
+}
+
+#letter-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 520;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.82);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+#letter-stage.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+#letter-stage.opening {
+    animation: letterStageOpen 0.55s ease forwards;
+    pointer-events: none;
+}
+
+@keyframes letterStageOpen {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    55% {
+        opacity: 0.85;
+        transform: scale(1.16) rotate(4deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.35) rotate(-8deg);
+    }
+}
+
+#letter-stage .letter {
+    position: relative;
+    z-index: 1;
+    width: 330px;
+    height: 292px;
+    filter: drop-shadow(0 0 30px rgba(255, 105, 180, 0.45));
+    transform: scale(0.7);
+}
+
+#letter-stage .valentines {
+    position: relative;
+    top: 50px;
+    cursor: pointer;
+    animation: letterFloat 3s linear infinite;
+    width: 300px;
+    height: 200px;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#letter-stage .valentines:focus-visible {
+    filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.8));
+}
+
+@keyframes letterFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-30px);
+    }
+}
+
+#letter-stage .envelope {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background-color: #f08080;
+}
+
+#letter-stage .envelope:before {
+    background-color: #f08080;
+    content: "";
+    position: absolute;
+    width: 212px;
+    height: 212px;
+    transform: rotate(45deg);
+    top: -105px;
+    left: 44px;
+    border-radius: 30px 0 0 0;
+}
+
+#letter-stage .front {
+    position: absolute;
+    border-right: 180px solid #f4978e;
+    border-top: 95px solid transparent;
+    border-bottom: 100px solid transparent;
+    left: 120px;
+    top: 5px;
+    width: 0;
+    height: 0;
+    z-index: 10;
+}
+
+#letter-stage .front:before {
+    position: absolute;
+    content: "";
+    border-left: 300px solid #f8ad9d;
+    border-top: 195px solid transparent;
+    left: -120px;
+    top: -95px;
+    width: 0;
+    height: 0;
+}
+
+#letter-stage .card {
+    position: absolute;
+    background-color: #eae2b7;
+    width: 270px;
+    height: 170px;
+    top: 5px;
+    left: 15px;
+    box-shadow: -5px -5px 100px rgba(0, 0, 0, 0.4);
+    transition: top 0.55s ease;
+}
+
+#letter-stage .valentines:hover .card,
+#letter-stage .valentines:focus-visible .card {
+    top: -90px;
+}
+
+#letter-stage .card:before {
+    content: "";
+    position: absolute;
+    border: 3px dotted #003049;
+    width: 240px;
+    height: 140px;
+    left: 12px;
+    top: 12px;
+}
+
+#letter-stage .text {
+    position: absolute;
+    font-family: "Brush Script MT", "Dancing Script", cursive;
+    font-size: 30px;
+    text-align: center;
+    line-height: 25px;
+    top: 19px;
+    left: 85px;
+    color: #003049;
+}
+
+#letter-stage .heart,
+#letter-stage .one,
+#letter-stage .two,
+#letter-stage .three,
+#letter-stage .four,
+#letter-stage .five {
+    background-color: #d62828;
+    display: inline-block;
+    position: relative;
+    transform: rotate(-45deg);
+}
+
+#letter-stage .heart {
+    height: 30px;
+    margin: 0 10px;
+    top: 80px;
+    left: 105px;
+    width: 30px;
+}
+
+#letter-stage .heart:before,
+#letter-stage .heart:after,
+#letter-stage .one:before,
+#letter-stage .one:after,
+#letter-stage .two:before,
+#letter-stage .two:after,
+#letter-stage .three:before,
+#letter-stage .three:after,
+#letter-stage .four:before,
+#letter-stage .four:after,
+#letter-stage .five:before,
+#letter-stage .five:after {
+    content: "";
+    background-color: inherit;
+    border-radius: 50%;
+    position: absolute;
+}
+
+#letter-stage .heart:before,
+#letter-stage .heart:after {
+    height: 30px;
+    width: 30px;
+}
+
+#letter-stage .heart:before {
+    top: -15px;
+    left: 0;
+}
+
+#letter-stage .heart:after {
+    left: 15px;
+    top: 0;
+}
+
+#letter-stage .hearts {
+    position: absolute;
+    top: 0;
+}
+
+#letter-stage .one,
+#letter-stage .two,
+#letter-stage .three,
+#letter-stage .four,
+#letter-stage .five {
+    height: 10px;
+    margin: 0 10px;
+    width: 10px;
+    top: 50px;
+}
+
+#letter-stage .one:before,
+#letter-stage .one:after,
+#letter-stage .two:before,
+#letter-stage .two:after,
+#letter-stage .three:before,
+#letter-stage .three:after,
+#letter-stage .four:before,
+#letter-stage .four:after,
+#letter-stage .five:before,
+#letter-stage .five:after {
+    height: 10px;
+    width: 10px;
+}
+
+#letter-stage .one:before,
+#letter-stage .two:before,
+#letter-stage .three:before,
+#letter-stage .four:before,
+#letter-stage .five:before {
+    top: -5px;
+    left: 0;
+}
+
+#letter-stage .one:after,
+#letter-stage .two:after,
+#letter-stage .three:after,
+#letter-stage .four:after,
+#letter-stage .five:after {
+    left: 5px;
+    top: 0;
+}
+
+#letter-stage .one {
+    left: 10px;
+    animation: flyingHeart 1s ease-out infinite;
+}
+
+#letter-stage .two {
+    left: 30px;
+    animation: flyingHeart 1.5s ease-out infinite;
+}
+
+#letter-stage .three {
+    left: 50px;
+    animation: flyingHeart 2s ease-out infinite;
+}
+
+#letter-stage .four {
+    left: 70px;
+    animation: flyingHeart 2.3s ease-out infinite;
+}
+
+#letter-stage .five {
+    left: 90px;
+    animation: flyingHeart 1.7s ease-out infinite;
+}
+
+@keyframes flyingHeart {
+    0% {
+        transform: translateY(0) rotate(-45deg) scale(0.3);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-150px) rotate(-45deg) scale(1.3);
+        opacity: 0.5;
+    }
+}
+
+#letter-stage .shadow {
+    position: absolute;
+    width: 330px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.3);
+    top: 265px;
+    left: -15px;
+    animation: letterShadow 3s linear infinite;
+    z-index: -1;
+}
+
+@keyframes letterShadow {
+
+    0%,
+    100% {
+        transform: scaleX(1);
+    }
+
+    50% {
+        transform: scaleX(0.85);
+    }
+}
+
+.wrapperLetterForm {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+    box-sizing: border-box;
+    display: none;
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.wrapperLetterForm.show {
+    display: flex;
+}
+
+.wrapperLetterForm .boxLetter {
+    position: relative;
+    width: min(600px, 92vw);
+    min-height: min(350px, 78vh);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: letterPaperAppear 0.45s ease both;
+    transform: scale(0.8);
+}
+
+@keyframes letterPaperAppear {
+    from {
+        opacity: 0;
+        transform: translateY(28px) scale(0.92);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.wrapperLetterForm .formLetter {
+    position: relative;
+    width: 600px;
+    min-height: 350px;
+    background-color: #ffebeb;
+    border-radius: 20px;
+    z-index: 100;
+    padding: 20px 15px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+    box-sizing: border-box;
+}
+
+.wrapperLetterForm .wrapperLetter {
+    position: relative;
+    width: 100%;
+    min-height: 310px;
+    border: 2px dashed #ff6666;
+    border-radius: inherit;
+    display: flex;
+    overflow: hidden;
+}
+
+.wrapperLetterForm .boxLetter .before {
+    position: absolute;
+    width: min(600px, 92vw);
+    height: min(350px, 78vh);
+    background: #fff;
+    transform: rotate(-15deg);
+    border-radius: 20px;
+    z-index: 10;
+}
+
+.wrapperLetterForm .heartLetter {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ffebeb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.wrapperLetterForm .heartLetterItem {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    background: #ff6666;
+}
+
+.wrapperLetterForm .heartLetter:first-child {
+    right: 5px;
+    top: 10px;
+}
+
+.wrapperLetterForm .heartLetter:nth-child(2) {
+    left: 5px;
+    bottom: 10px;
+}
+
+.wrapperLetterForm .heartLetterItem::before,
+.wrapperLetterForm .heartLetterItem::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: inherit;
+}
+
+.wrapperLetterForm .heartLetterItem::before {
+    top: -50%;
+}
+
+.wrapperLetterForm .heartLetterItem::after {
+    left: -50%;
+}
+
+.wrapperLetterForm .giftbox {
+    display: none;
+}
+
+.wrapperLetterForm .giftbox .img {
+    display: none;
+}
+
+.wrapperLetterForm .giftbox img {
+    width: 100%;
+}
+
+.wrapperLetterForm .textLetter {
+    width: 100%;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+.wrapperLetterForm .textLetter h2 {
+    min-height: 42px;
+    margin: 0;
+    font-size: clamp(28px, 5vw, 34px);
+    line-height: 1.2;
+    font-family: "Dancing Script", cursive;
+    color: #c41e3a;
+    text-align: center;
+}
+
+.wrapperLetterForm .contentLetter {
+    width: 100%;
+    margin: 0 auto;
+
+    text-align: center;
+    line-height: 1.5;
+    color: #4a2228;
+}
+
+.wrapperLetterForm .letter-close {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(196, 30, 58, 0.12);
+    color: #c41e3a;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    z-index: 130;
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.wrapperLetterForm .letter-close:hover {
+    background: rgba(196, 30, 58, 0.22);
+    transform: scale(1.08);
+}
+
+.wrapperLetterForm .heartAnimation {
+    position: absolute;
+    width: 150px;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 4;
+}
+
+.wrapperLetterForm .heartAnimation img {
+    width: 100%;
+    display: block;
+}
+
+.wrapperLetterForm .mewmew1,
+.wrapperLetterForm .mewmew2 {
+    position: absolute;
+    width: 90px;
+    bottom: 0;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.wrapperLetterForm .mewmew1 {
+    left: 0;
+}
+
+.wrapperLetterForm .mewmew2 {
+    right: 0;
+}
+
+.wrapperLetterForm .mewmew1 img,
+.wrapperLetterForm .mewmew2 img {
+    width: 100%;
+    display: block;
+}
+
+.wrapperLetterForm .signature {
+    position: relative;
+    align-self: flex-end;
+    margin: 1.5em 14px 10px 0;
+    font-family: "Dancing Script", cursive;
+    font-size: 21px;
+    color: #ff6666;
+    font-style: italic;
+    text-align: right;
+    z-index: 5;
+}
+
+.wrapperLetterForm .typewriter-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: #c41e3a;
+    margin-left: 2px;
+    animation: cursorBlink 0.8s infinite;
+    vertical-align: text-bottom;
+}
+
+@keyframes cursorBlink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@media (max-width: 680px) {
+    #letter-stage .letter {
+        transform: scale(0.7);
+    }
+
+    .wrapperLetterForm .boxLetter .before {
+        display: none;
+    }
+
+    .wrapperLetterForm .formLetter {
+        width: 100%;
+        min-height: auto;
+        padding: 16px 12px;
+    }
+
+    .wrapperLetterForm .wrapperLetter {
+        flex-direction: column;
+        align-items: center;
+        min-height: min(560px, 78vh);
+        overflow-y: auto;
+    }
+
+    .wrapperLetterForm .giftbox {
+        width: 100%;
+        min-height: 110px;
+    }
+
+    .wrapperLetterForm .giftbox .img {
+        left: 50%;
+        bottom: -8px;
+        transform: translateX(-50%) scale(0.8);
+    }
+
+    .wrapperLetterForm .textLetter {
+        width: 100%;
+        padding: 0 8px 74px;
+    }
+
+    .wrapperLetterForm .contentLetter {
+        min-height: 160px;
+        padding: 0 10px;
+    }
+
+    .wrapperLetterForm .signature {
+        margin-right: 18px;
+        margin-bottom: 12px;
+        font-size: 19px;
+    }
+
+    .wrapperLetterForm .heartAnimation {
+        right: 0;
+        bottom: 8px;
+        width: 120px;
+    }
+
+    .wrapperLetterForm .mewmew1,
+    .wrapperLetterForm .mewmew2 {
+        width: 72px;
+    }
+}
+
+
+
+/* ===== Sao băng + nền cricle (luôn dưới cùng) ===== */
+.shooting-stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes shooting-star-opacity {
+    0% {
+        opacity: 0;
+    }
+
+    40% {
+        opacity: 1;
+    }
+
+    60% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes shooting-star-pos {
+    0% {
+        transform: scale(0) rotate(0) translate3d(0, 0, 0);
+    }
+
+    100% {
+        transform: scale(1) rotate(0) translate3d(-450px, 450px, 0);
+    }
+}
+
+.shooting-star {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    transform-origin: 100% 0;
+    animation: shooting-star-opacity 6s infinite ease-in, shooting-star-pos 6s infinite ease-in;
+    box-shadow: 0 0 8px 3px rgba(255, 255, 255, 0.4);
+    opacity: 0;
+}
+
+.shooting-star:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 3px;
+    border: 0 solid #fff;
+    border-width: 0 80px 1.5px;
+    border-color: transparent transparent transparent rgba(255, 255, 255, 0.4);
+}

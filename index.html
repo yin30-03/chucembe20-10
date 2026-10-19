@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>20-10</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Indie+Flower&family=Lora:wght@500;600&family=Montserrat:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Mali';
+      src: url('font/Mali.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+  <link rel="stylesheet" href="./assets/main.css">
+</head>
+
+<body>
+  <!-- Nền hiệu ứng cricle: sao băng -->
+  <div class="shooting-stars" id="shooting-stars"></div>
+
+
+  <!-- INTRO: Hoa hạt Galaxy -->
+  <div class="love-intro">
+    <canvas id="loveCanvas"></canvas>
+    <button class="galaxy-hint" id="galaxyHint" type="button">Nhấn vào màn hình đi</button>
+  </div>
+
+  <!-- KHUNG (hiện sau khi hoa tỏa xong) -->
+  <div id="content">
+    <img id="anh" src="images/anh.jpg" alt="Ảnh của bạn" hidden>
+
+    <div class="stage">
+      <div class="frame">
+        <div class="gold">
+          <div class="names"><span id="n1"></span><span class="heart">&#10084;</span><span id="n2"></span></div>
+          <div class="puzzle" id="pzwrap" title="Bấm giữ để tiếp tục"><svg id="pz" viewBox="0 0 800 600"
+              preserveAspectRatio="xMidYMid meet"></svg></div>
+          <div class="hold-hint" id="holdHint">Bấm giữ vào mảnh ghép trái tim</div>
+          <div class="right">
+            <p class="small" id="t1"></p>
+            <p class="script" id="t2"></p>
+            <div class="month" id="mon"></div>
+            <div class="cal" id="cal"></div>
+          </div>
+          <svg class="flora" viewBox="0 0 1000 150" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+            <defs>
+              <g id="daisy">
+                <g fill="#fff" stroke="#ddd" stroke-width=".6">
+                  <ellipse cx="0" cy="-9" rx="4" ry="9" />
+                  <ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(45)" />
+                  <ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(90)" />
+                  <ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(135)" />
+                  <ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(180)" />
+                  <ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(225)" />
+                  <ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(270)" />
+                  <ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(315)" />
+                </g>
+                <circle r="4.5" fill="#f2b632" />
+              </g>
+              <g id="bell">
+                <g fill="#6d7de8" stroke="#3f4cc0" stroke-width=".6">
+                  <ellipse cx="-7" cy="-3" rx="4.5" ry="6" transform="rotate(-25 -7 -3)" />
+                  <ellipse cx="7" cy="-3" rx="4.5" ry="6" transform="rotate(25 7 -3)" />
+                  <ellipse cx="0" cy="-9" rx="4.5" ry="6" />
+                </g>
+              </g>
+              <g id="wf">
+                <g fill="#fff3b8" stroke="#d9c26a" stroke-width=".6">
+                  <circle cx="0" cy="-8" r="5" />
+                  <circle cx="8" cy="-1" r="5" />
+                  <circle cx="-8" cy="-1" r="5" />
+                  <circle cx="5" cy="7" r="5" />
+                  <circle cx="-5" cy="7" r="5" />
+                </g>
+                <circle r="3" fill="#f0a52c" />
+              </g>
+              <g id="leafy" fill="#a8cf8d" stroke="#5f9648" stroke-width=".6">
+                <ellipse cx="-9" cy="-4" rx="9" ry="3.6" transform="rotate(-30 -9 -4)" />
+                <ellipse cx="9" cy="-10" rx="9" ry="3.6" transform="rotate(30 9 -10)" />
+                <ellipse cx="-8" cy="-18" rx="8" ry="3.2" transform="rotate(-30 -8 -18)" />
+                <ellipse cx="8" cy="-25" rx="8" ry="3.2" transform="rotate(30 8 -25)" />
+              </g>
+              <g id="bf">
+                <path d="M0 0C-8-16-26-16-24-3-23 5-8 5 0 0Z M0 0C8-16 26-16 24-3 23 5 8 5 0 0Z" fill="#7fb4ff"
+                  stroke="#2f62c9" stroke-width="1" />
+                <path d="M0 2C-6 10-16 12-14 18-12 22-3 14 0 2Z M0 2C6 10 16 12 14 18 12 22 3 14 0 2Z" fill="#a9ccff"
+                  stroke="#2f62c9" stroke-width="1" />
+                <circle cx="0" cy="1" r="1.8" fill="#222" />
+              </g>
+            </defs>
+            <g stroke-linecap="round" fill="none" stroke="#8cc072" stroke-width="2">
+              <path
+                d="M60 150V92M120 150V100M205 150V72M290 150V98M370 150V80M455 150V96M540 150V70M620 150V92M700 150V76M780 150V100M860 150V84M940 150V96" />
+            </g>
+            <g transform="translate(60 92)">
+              <use href="#daisy" />
+            </g>
+            <g transform="translate(120 100)">
+              <use href="#bell" />
+            </g>
+            <g transform="translate(205 72)">
+              <use href="#daisy" transform="scale(1.2)" />
+            </g>
+            <g transform="translate(290 98)">
+              <use href="#wf" />
+            </g>
+            <g transform="translate(370 80)">
+              <use href="#bell" transform="scale(1.2)" />
+            </g>
+            <g transform="translate(455 96)">
+              <use href="#daisy" />
+            </g>
+            <g transform="translate(540 70)">
+              <use href="#wf" transform="scale(1.2)" />
+            </g>
+            <g transform="translate(620 92)">
+              <use href="#bell" />
+            </g>
+            <g transform="translate(700 76)">
+              <use href="#daisy" transform="scale(1.2)" />
+            </g>
+            <g transform="translate(780 100)">
+              <use href="#wf" />
+            </g>
+            <g transform="translate(860 84)">
+              <use href="#bell" transform="scale(1.2)" />
+            </g>
+            <g transform="translate(940 96)">
+              <use href="#daisy" />
+            </g>
+            <g transform="translate(30 150)">
+              <use href="#leafy" transform="scale(1.3)" />
+            </g>
+            <g transform="translate(165 150)">
+              <use href="#leafy" />
+            </g>
+            <g transform="translate(335 150)">
+              <use href="#leafy" transform="scale(1.2)" />
+            </g>
+            <g transform="translate(500 150)">
+              <use href="#leafy" />
+            </g>
+            <g transform="translate(660 150)">
+              <use href="#leafy" transform="scale(1.3)" />
+            </g>
+            <g transform="translate(820 150)">
+              <use href="#leafy" />
+            </g>
+            <g transform="translate(975 150)">
+              <use href="#leafy" transform="scale(1.2)" />
+            </g>
+            <g transform="translate(40 40) rotate(-20)">
+              <use href="#bf" transform="scale(.9)" />
+            </g>
+            <g transform="translate(400 30) rotate(15)">
+              <use href="#bf" transform="scale(.7)" />
+            </g>
+            <g transform="translate(880 36) rotate(-12)">
+              <use href="#bf" transform="scale(.8)" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Nhạc nền — đặt NGOÀI galaxy-scene để không bị ẩn/dừng khi chuyển cảnh -->
+  <audio id="audio" loop preload="auto">
+    <source src="./images/audio/nhac.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- CẢNH DẢI NGÂN HÀ (churoi) — hiện sau khi bấm giữ trái tim -->
+  <div id="galaxy-scene" aria-hidden="true">
+    <canvas id="c"></canvas>
+    <h1 id="main-title"></h1>
+  </div>
+
+  <!-- Nút hiệu ứng — lớp trên cùng, ngoài galaxy-scene (icon mèo nhảy → quả cầu ảnh) -->
+  <button id="love-letter-btn" type="button" aria-label="Mở quả cầu ảnh" hidden>
+    <img id="effect-btn-img" src="./images/icon/mewmew.gif" alt="">
+  </button>
+
+  <!-- Quả cầu ảnh (CSS3D Sphere) — từ cricle -->
+  <div id="sphere-container" aria-hidden="true"></div>
+
+  <!-- Envelope & Letter (sau quả cầu) — từ cricle -->
+  <div id="envelope-overlay"></div>
+  <div id="letter-stage" aria-hidden="true">
+    <div class="letter">
+      <div class="valentines" id="letter-trigger" role="button" tabindex="0" aria-label="Open letter">
+        <div class="envelope"></div>
+        <div class="front"></div>
+        <div class="card">
+          <div class="heart"></div>
+        </div>
+        <div class="hearts" aria-hidden="true">
+          <div class="one"></div>
+          <div class="two"></div>
+          <div class="three"></div>
+          <div class="four"></div>
+          <div class="five"></div>
+        </div>
+      </div>
+      <div class="shadow"></div>
+    </div>
+  </div>
+
+  <div class="wrapperLetterForm" aria-hidden="true">
+    <div class="boxLetter">
+      <button class="letter-close" id="letter-close-btn" type="button" aria-label="Close letter">×</button>
+      <div class="formLetter">
+        <div class="heartLetter">
+          <div class="heartLetterItem"></div>
+        </div>
+        <div class="heartLetter">
+          <div class="heartLetterItem"></div>
+        </div>
+        <div class="wrapperLetter">
+          <div class="giftbox" aria-hidden="true">
+            <div class="img"><img src="./images/icon/giftbox.png" alt=""></div>
+          </div>
+          <div class="textLetter">
+            <h2 class="popup-title clone-letter-title"></h2>
+            <p class="contentLetter">
+              <span id="letter-content-text"></span><span class="typewriter-cursor" aria-hidden="true"></span>
+            </p>
+            <div class="heartAnimation" aria-hidden="true">
+              <img src="./images/icon/heartAnimation.gif" alt="">
+            </div>
+          <div class="signature">AnhiuCún<br> &#10084;</div>
+          </div>
+          <div class="mewmew1" aria-hidden="true"><img src="./images/icon/mewmew.gif" alt=""></div>
+          <div class="mewmew2" aria-hidden="true"><img src="./images/icon/mewmew.gif" alt=""></div>
+        </div>
+      </div>
+      <div class="before"></div>
+    </div>
+  </div>
+
+  <!-- Three.js mới (chữ/ảnh xoay) + CSS3D/Orbit (quả cầu) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.148.0/build/three.min.js"></script>
+  <script src="./assets/tween.min.js"></script>
+  <script src="./assets/CSS3DRenderer.js"></script>
+  <script src="./assets/OrbitControls.js"></script>
+  <script src="./assets/sphere.js"></script>
+  <script src="./assets/letter.js"></script>
+  <script src="./assets/main.js"></script>
+  <script type="module" src="./assets/bg-effects.js"></script>
+
+  <script>
+    (function () {
+      function createShootingStars() {
+        var container = document.getElementById('shooting-stars');
+        if (!container) return;
+        for (var i = 0; i < 20; i++) {
+          var el = document.createElement('div');
+          el.className = 'shooting-star';
+          el.style.left = (Math.random() * (window.innerWidth * 0.8) + window.innerWidth * 0.2) + 'px';
+          el.style.top = (Math.random() * (window.innerHeight * 0.3)) + 'px';
+          el.style.animationDelay = (Math.random() * 10) + 's';
+          var size = 3 + Math.random() * 3;
+          el.style.width = size + 'px';
+          el.style.height = size + 'px';
+          container.appendChild(el);
+        }
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', createShootingStars);
+      else createShootingStars();
+    })();
+  </script>
+</body>
+
+</html>
